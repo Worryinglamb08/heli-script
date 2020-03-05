@@ -29,7 +29,12 @@ local manual_spotlight = false
 local tracking spotlight = false
 local vehicle_display = 0 -- 0 is default full vehicle info display with speed/model/plate, 1 is model/plate, 2 turns off display
 local helicam = false
-local polmav_hash = GetHashKey("polmav")
+
+local heli_list = {
+	'polmav',
+	'newsheli',
+	'soheli'
+}
 local fov = (fov_max+fov_min)*0.5
 local vision_state = 0 -- 0 is normal, 1 is nightmode, 2 is thermal vision
 
@@ -489,7 +494,11 @@ end)
 function IsPlayerInPolmav()
 	local lPed = GetPlayerPed(-1)
 	local vehicle = GetVehiclePedIsIn(lPed)
-	return IsVehicleModel(vehicle, polmav_hash)
+	for k, v in ipairs(heli_list) do
+		if IsVehicleModel(vehicle, GetHashKey(v) ) then 
+			return true
+		end
+	end
 end
 
 function IsHeliHighEnough(heli)
